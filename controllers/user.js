@@ -9,8 +9,15 @@ exports.signup = (req, res, next) => {
             email : req.body.email,
             password : hash
         });
+        user.save()
+        .then( () => res.status(201).json({message : "Utilisateur inscrit!"}))
+        .catch(error => {
+            return res.status(400).json({error : error});
+        });
     })
-    .catch()
+    .catch( error => {
+        return res.status(500).json({error : error});
+    })
 };
 
 exports.login = (req, res, next) => {
