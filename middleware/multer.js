@@ -1,16 +1,24 @@
 const multer = require('multer');
 
-
+const mimeTypes = {
+   'image/jpg': 'jpg',
+   'image/jpeg': 'jpg',
+   'image/png': 'png',
+   'image/bmp': 'bmp',
+   'image/gif': 'gif'
+};
 
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, "/public/uploads"),
-    filename: function (req, file, cb) {
-       const fullName =
-          "blog_" + uuid4().replace(/-/g, "") +
-          path.extname(file.originalname);
-          cb(null, fullName);
-    },
- });
- const upload = multer({ storage: storage });
+   destination: function (req, file, callback) {
+      callback(null, 'images')
+   },
+   filename: function (req, file, callback) {
+      const name = file.originalname.split(' ').join('_') + Date.now();
+      const extention = mimeTypes.value(file.mimetype);
+      callback(null, name + '.' + extention);
+   }
+})
 
- module.exports = upload;
+const upload = multer({ storage: storage });
+
+module.exports = upload;

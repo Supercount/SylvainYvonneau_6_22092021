@@ -1,6 +1,9 @@
 const User = require('../models/Users');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const keygen = require('keygenerator');
+
+const keyGenerated = keygen._();
 
 exports.signup = (req, res, next) => {
     bcryptjs.hash(req.body.password,20)
@@ -21,5 +24,28 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    
+    User.findOne({email : req.body.email})
+    .then( user => {
+        if (user == null) {
+            return res.status(401).json({error : "Utilisateur inexistant!"});
+        } else {
+            bcryptjs.compare(req.body.password,user.password)
+            .then( isValid => {
+                if (isValid) {
+                    return res.status(200).json({
+                        userId : user._id,
+                        token : jwt.sign({userId : user._id}, keyGenerated, {expiresIn : "1d"})
+                    });
+                } else {
+                    return res.status(401).json({error : "Mot de passe incorrect!"});
+                }
+            })
+            .catch(error => {
+                return res.status(500).json({error : error});
+            })
+        }
+    })
+    .catch( error => {
+        return res.status(500).json({error : error});
+    });
 };
