@@ -1,9 +1,6 @@
 const User = require('../models/Users');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const keygen = require('keygenerator');
-
-const keyGenerated = keygen._();
 
 exports.signup = (req, res, next) => {
     bcryptjs.hash(req.body.password,20)
@@ -34,7 +31,7 @@ exports.login = (req, res, next) => {
                 if (isValid) {
                     return res.status(200).json({
                         userId : user._id,
-                        token : jwt.sign({userId : user._id}, keyGenerated, {expiresIn : "1d"})
+                        token : jwt.sign({userId : user._id}, process.env.SECRET_TOKEN, {expiresIn : "1d"})
                     });
                 } else {
                     return res.status(401).json({error : "Mot de passe incorrect!"});
