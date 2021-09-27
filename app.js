@@ -6,7 +6,7 @@ require('dotenv').config()
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
 
-mongoose.connect(process.env.APP_NAME,{
+mongoose.connect(process.env.DB_URL,{
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
