@@ -1,4 +1,6 @@
 const Sauce = require('../models/Sauces');
+const fs = require('fs');
+
 
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
@@ -49,7 +51,23 @@ exports.modifySauce = (req, res, next) => {
 };
 
 exports.deleteSauce = (req, res, next) => {
-
+    Sauce.findOne({_id : req.params.id})
+    .then( sauce => {
+        const imageSauce = sauce.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${imageSauce}`,() => {
+            Sauce.deleteOne({_id : req.params.id})
+            .then( () => {
+                return res.status(200).json({message : "Sauce supprimée!"});
+            })
+            .catch(err => {
+                return res.status(400).json({error : err});
+            });
+        });
+        return res.status(200).json(retour);
+    })
+    .catch( error => {
+        return res.status(404).json({error : error});
+    })
 };
 
 exports.likeSauce = (req, res, next) => {
