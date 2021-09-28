@@ -59,11 +59,10 @@ exports.deleteSauce = (req, res, next) => {
             .then( () => {
                 return res.status(200).json({message : "Sauce supprimée!"});
             })
-            .catch(err => {
+            .catch( (err) => {
                 return res.status(400).json({error : err});
             });
         });
-        return res.status(200).json(retour);
     })
     .catch( error => {
         return res.status(404).json({error : error});
