@@ -47,7 +47,50 @@ exports.createSauce = (req, res, next) => {
 };
 
 exports.modifySauce = (req, res, next) => {
-
+    const newSauce = (req.file != null) ? {
+        userId : JSON.parse(req.body.sauce).userId,
+        name : JSON.parse(req.body.sauce).name,
+        manufacturer : JSON.parse(req.body.sauce).manufacturer,
+        description : JSON.parse(req.body.sauce).description,
+        mainPepper : JSON.parse(req.body.sauce).mainPepper,
+        imageUrl : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        heat : JSON.parse(req.body.sauce).heat,
+        likes : JSON.parse(req.body.sauce).likes,
+        dislikes : JSON.parse(req.body.sauce).dislikes,
+        usersLiked : JSON.parse(req.body.sauce).usersLiked,
+        usersDisiked : JSON.parse(req.body.sauce).usersDisiked
+    } : {
+        userId : req.body.userId,
+        name : req.body.name,
+        manufacturer : req.body.manufacturer,
+        description : req.body.description,
+        mainPepper : req.body.mainPepper,
+        imageUrl : req.body.imageUrl,
+        heat : req.body.heat,
+        likes : req.body.likes,
+        dislikes : req.body.dislikes,
+        usersLiked : req.body.usersLiked,
+        usersDisiked : req.body.usersDisiked
+    } ;
+    Sauce.updateOne({_id : req.params.id}, {
+        userId : newSauce.userId,
+        name : newSauce.name,
+        manufacturer : newSauce.manufacturer,
+        description : newSauce.description,
+        mainPepper : newSauce.mainPepper,
+        imageUrl : newSauce.imageUrl,
+        heat : newSauce.heat,
+        likes : newSauce.likes,
+        dislikes : newSauce.dislikes,
+        usersLiked : newSauce.usersLiked,
+        usersDisiked : newSauce.usersDisiked
+    })
+    .then( () => {
+        return res.status(200).json({message : "Sauce modifiée!"});
+    })
+    .catch( (err) => {
+        return res.status(400).json({error : err});
+    });
 };
 
 exports.deleteSauce = (req, res, next) => {
@@ -70,5 +113,5 @@ exports.deleteSauce = (req, res, next) => {
 };
 
 exports.likeSauce = (req, res, next) => {
-
+    
 };
