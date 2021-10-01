@@ -9,5 +9,6 @@ Clonez le projet présent à l'adresse https://github.com/OpenClassrooms-Student
 ## Partie Back-end ##
 
 Clonez ce projet sur votre poste de travail et effectuez les opérations suivantes pour le faire fonctionner :
-- lancez la commande `npm install`
-- Une fois l'installation terminée, lancez la commande `node server` pour lancer l'API
+- Créez un fichier .env sur la base du fichier .env.model (en le copiant par exemple).
+- Lancez la commande `npm install`
+- Une fois l'installation terminée, lancez la commande `node server` pour lancer l'API.
